@@ -77,6 +77,10 @@ app.patch('/produtos/:id', async (req, res) => {
 // ROTA DELETE: Remove um produto do banco buscando pelo ID
 app.delete('/produtos/:id', async (req, res) => {
     try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            return res.status(400).json({ erro: 'ID inválido' });
+        }
+
         const produtoDeletado = await Produto.findByIdAndDelete(req.params.id);
 
         if (!produtoDeletado) {
