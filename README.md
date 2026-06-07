@@ -438,12 +438,11 @@ O [Postman](https://www.postman.com/downloads/) é uma ferramenta visual para te
 
 ### Dica — Testando Erros
 
-Tente criar um cliente com email já cadastrado:
-
+Tente criar um cliente com e-mail já cadastrado (erro de duplicidade):
 **Resultado esperado — Status `400 Bad Request`:**
 ```json
 {
-  "erro": "E11000 duplicate key error..."
+  "erro": "E11000 duplicate key error collection: meu_primeiro_nosql.clientes index: email_1 dup key..."
 }
 ```
 
