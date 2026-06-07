@@ -36,12 +36,15 @@ app.get('/produtos', async (req, res) => {
 // ROTA PUT: Atualiza o produto INTEIRO buscando pelo ID na URL
 app.put('/produtos/:id', async (req, res) => {
     try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            return res.status(400).json({ erro: 'ID inválido' });
+        }
+
         // Bloqueia operadores do MongoDB no payload (ex.: $unset, $inc) e paths com '.'
         const invalidKey = Object.keys(req.body || {}).find((k) => k.startsWith('$') || k.includes('.'));
         if (invalidKey) {
             return res.status(400).json({ erro: 'Payload inválido para atualização' });
         }
-
         const produtoAtualizado = await Produto.findByIdAndUpdate(
             req.params.id,
             req.body,
