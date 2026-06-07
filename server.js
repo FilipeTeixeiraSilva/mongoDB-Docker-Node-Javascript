@@ -64,6 +64,15 @@ app.put('/produtos/:id', async (req, res) => {
 // ROTA PATCH: Atualiza apenas os campos enviados no Body buscando pelo ID
 app.patch('/produtos/:id', async (req, res) => {
     try {
+        if (!mongoose.isValidObjectId(req.params.id)) {
+            return res.status(400).json({ erro: 'ID inválido' });
+        }
+
+        const invalidKey = Object.keys(req.body || {}).find((k) => k.startsWith('$') || k.includes('.'));
+        if (invalidKey) {
+            return res.status(400).json({ erro: 'Payload inválido para atualização' });
+        }
+
         // O funcionamento no Mongoose é parecido com o PUT, mas passamos apenas o que veio no body
         const produtoModificado = await Produto.findByIdAndUpdate(
             req.params.id,
