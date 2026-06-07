@@ -32,9 +32,6 @@ app.get('/produtos', async (req, res) => {
     }
 });
 
-app.listen(process.env.PORT, () => {
-    console.log(`🔥 Servidor rodando na porta ${process.env.PORT}`);
-});
 
 // ROTA PUT: Atualiza o produto INTEIRO buscando pelo ID na URL
 app.put('/produtos/:id', async (req, res) => {
@@ -90,4 +87,8 @@ app.delete('/produtos/:id', async (req, res) => {
     } catch (error) {
         res.status(500).json({ erro: error.message });
     }
+});
+
+app.listen(process.env.PORT, () => {
+    console.log(`🔥 Servidor rodando na porta ${process.env.PORT}`);
 });
