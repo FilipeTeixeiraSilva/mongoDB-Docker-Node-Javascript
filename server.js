@@ -57,7 +57,8 @@ app.put('/produtos/:id', async (req, res) => {
 
         res.json(produtoAtualizado);
     } catch (error) {
-        res.status(400).json({ erro: error.message });
+        const status = (error?.name === 'ValidationError' || error?.name === 'CastError') ? 400 : 500;
+        res.status(status).json({ erro: error.message });
     }
 });
 
