@@ -35,3 +35,59 @@ app.get('/produtos', async (req, res) => {
 app.listen(process.env.PORT, () => {
     console.log(`🔥 Servidor rodando na porta ${process.env.PORT}`);
 });
+
+// ROTA PUT: Atualiza o produto INTEIRO buscando pelo ID na URL
+app.put('/produtos/:id', async (req, res) => {
+    try {
+        // { new: true } faz o Mongo retornar o documento já atualizado
+        // { runValidators: true } garante que as regras do Schema (como required) sejam validadas
+        const produtoAtualizado = await Produto.findByIdAndUpdate(
+            req.params.id, 
+            req.body, 
+            { new: true, runValidators: true }
+        );
+
+        if (!produtoAtualizado) {
+            return res.status(404).json({ erro: 'Produto não encontrado' });
+        }
+
+        res.json(produtoAtualizado);
+    } catch (error) {
+        res.status(400).json({ erro: error.message });
+    }
+});
+
+// ROTA PATCH: Atualiza apenas os campos enviados no Body buscando pelo ID
+app.patch('/produtos/:id', async (req, res) => {
+    try {
+        // O funcionamento no Mongoose é parecido com o PUT, mas passamos apenas o que veio no body
+        const produtoModificado = await Produto.findByIdAndUpdate(
+            req.params.id,
+            { $set: req.body }, // O operador $set garante que apenas os campos enviados sejam tocados
+            { new: true, runValidators: true }
+        );
+
+        if (!produtoModificado) {
+            return res.status(404).json({ erro: 'Produto não encontrado' });
+        }
+
+        res.json(produtoModificado);
+    } catch (error) {
+        res.status(400).json({ erro: error.message });
+    }
+});
+
+// ROTA DELETE: Remove um produto do banco buscando pelo ID
+app.delete('/produtos/:id', async (req, res) => {
+    try {
+        const produtoDeletado = await Produto.findByIdAndDelete(req.params.id);
+
+        if (!produtoDeletado) {
+            return res.status(404).json({ erro: 'Produto não encontrado' });
+        }
+
+        res.json({ mensagem: 'Produto removido com sucesso!', produto: produtoDeletado });
+    } catch (error) {
+        res.status(500).json({ erro: error.message });
+    }
+});
