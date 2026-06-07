@@ -87,7 +87,8 @@ app.patch('/produtos/:id', async (req, res) => {
 
         res.json(produtoModificado);
     } catch (error) {
-        res.status(400).json({ erro: error.message });
+        const status = (error?.name === 'ValidationError' || error?.name === 'CastError') ? 400 : 500;
+        res.status(status).json({ erro: error.message });
     }
 });
 
