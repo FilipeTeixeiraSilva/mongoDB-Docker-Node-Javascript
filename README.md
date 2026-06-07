@@ -215,7 +215,7 @@ Base URL: `http://localhost:3000`
 
 ### PUT /produtos/:id — Atualizar produto inteiro
 
-Substitui **todos** os campos do produto. Campos não enviados voltam ao valor padrão.
+Atualiza o produto com base nos campos enviados no body. Campos não enviados permanecem inalterados.
 
 **Body:**
 ```json
