@@ -149,6 +149,10 @@ app.put('/clientes/:id', async (req, res) => {
             return res.status(400).json({ erro: 'Payload inválido para atualização' });
         }
 
+        const missing = ['nome', 'email', 'dataNascimento'].filter((f) => req.body?.[f] == null);
+        if (missing.length) {
+            return res.status(400).json({ erro: `Campos obrigatórios ausentes: ${missing.join(', ')}` });
+        }
         const clienteAtualizado = await Cliente.findByIdAndUpdate(
             req.params.id,
             req.body,
