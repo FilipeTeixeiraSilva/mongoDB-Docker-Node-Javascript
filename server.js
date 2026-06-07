@@ -36,11 +36,15 @@ app.get('/produtos', async (req, res) => {
 // ROTA PUT: Atualiza o produto INTEIRO buscando pelo ID na URL
 app.put('/produtos/:id', async (req, res) => {
     try {
-        // { new: true } faz o Mongo retornar o documento já atualizado
-        // { runValidators: true } garante que as regras do Schema (como required) sejam validadas
+        // Bloqueia operadores do MongoDB no payload (ex.: $unset, $inc) e paths com '.'
+        const invalidKey = Object.keys(req.body || {}).find((k) => k.startsWith('$') || k.includes('.'));
+        if (invalidKey) {
+            return res.status(400).json({ erro: 'Payload inválido para atualização' });
+        }
+
         const produtoAtualizado = await Produto.findByIdAndUpdate(
-            req.params.id, 
-            req.body, 
+            req.params.id,
+            req.body,
             { new: true, runValidators: true }
         );
 
