@@ -119,7 +119,11 @@ app.post('/clientes', async (req, res) => {
         await novoCliente.save();
         res.status(201).json(novoCliente);
     } catch (error) {
-        res.status(400).json({ erro: error.message });
+        const status =
+            (error?.name === 'ValidationError' || error?.name === 'CastError') ? 400 :
+            (error?.code === 11000) ? 409 :
+            500;
+        res.status(status).json({ erro: status === 409 ? 'Email já cadastrado' : error.message });
     }
 });
 
