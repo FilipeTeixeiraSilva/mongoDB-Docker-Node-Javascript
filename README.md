@@ -430,9 +430,9 @@ O [Postman](https://www.postman.com/downloads/) é uma ferramenta visual para te
 
 | | PUT | PATCH |
 |---|---|---|
-| O que faz | Substitui o documento inteiro | Atualiza só os campos enviados |
-| Quando usar | Quando quer reescrever tudo | Quando quer mudar um campo só |
-| Campos não enviados | Voltam ao padrão | Permanecem inalterados |
+| O que faz | Atualiza o documento com os campos enviados | Atualiza só os campos enviados |
+| Quando usar | Quando quer enviar o objeto completo (convenção) | Quando quer mudar um campo só |
+| Campos não enviados | Permanecem inalterados | Permanecem inalterados |
 
 ---
 
