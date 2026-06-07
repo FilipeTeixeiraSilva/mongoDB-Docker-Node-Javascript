@@ -189,6 +189,9 @@ app.patch('/clientes/:id', async (req, res) => {
 
         res.json(clienteModificado);
     } catch (error) {
+        if (error?.code === 11000) {
+            return res.status(400).json({ erro: 'E-mail já cadastrado' });
+        }
         const status = (error?.name === 'ValidationError' || error?.name === 'CastError') ? 400 : 500;
         res.status(status).json({ erro: error.message });
     }
